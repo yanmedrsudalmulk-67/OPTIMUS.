@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import Image from 'next/image';
 import { useReactToPrint } from "react-to-print";
 import { Printer, ArrowLeft, Download, ShieldCheck } from "lucide-react";
 
@@ -362,11 +363,7 @@ export default function IKPDocument({
                   {/* SIGNATURE DISPLAY AREA */}
                   <div className="w-52 h-24 border-b border-dashed border-slate-400 my-3 flex items-center justify-center bg-slate-50/20 rounded-md relative overflow-hidden">
                     {formData.ttdPembuatBase64 ? (
-                      <img
-                        src={formData.ttdPembuatBase64}
-                        alt="Tangan Pembuat Laporan"
-                        className="max-w-full max-h-full object-contain"
-                      />
+                      <Image src={formData.ttdPembuatBase64} alt="Tangan Pembuat Laporan" fill className="object-contain" referrerPolicy="no-referrer" />
                     ) : (
                       <span className="text-[10px] text-gray-300 tracking-wider font-bold">Tanpa Tanda Tangan</span>
                     )}
@@ -389,11 +386,7 @@ export default function IKPDocument({
                   {/* SIGNATURE DISPLAY AREA */}
                   <div className="w-52 h-24 border-b border-dashed border-slate-400 my-3 flex items-center justify-center bg-slate-50/20 rounded-md relative overflow-hidden">
                     {formData.ttdPenerimaBase64 ? (
-                      <img
-                        src={formData.ttdPenerimaBase64}
-                        alt="Tangan Penerima Laporan"
-                        className="max-w-full max-h-full object-contain"
-                      />
+                      <Image src={formData.ttdPenerimaBase64} alt="Tangan Penerima Laporan" fill className="object-contain" referrerPolicy="no-referrer" />
                     ) : (
                       <span className="text-[10px] text-gray-300 tracking-wider font-bold">Tanpa Tanda Tangan</span>
                     )}

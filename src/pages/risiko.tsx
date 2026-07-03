@@ -21,7 +21,7 @@ import {
   X,
   PieChart as PieChartIcon,
   Database,
-  Copy
+  
 } from "lucide-react";
 import { 
   PieChart, 
@@ -102,7 +102,6 @@ const CHART_COLORS = {
 
 
 // --- Mock Data ---
-const initialData: RiskRecord[] = [];
 
 // --- Components ---
 const SummaryCard = ({ title, value, icon: Icon, shadowClass, textClass }: any) => {
@@ -132,7 +131,6 @@ export default function ManajemenRisiko() {
   const [newUnitName, setNewUnitName] = useState('');
   const [activeTab, setActiveTab] = useState<'dashboard' | 'data' | 'input'>('dashboard');
   const [supabaseError, setSupabaseError] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
   const [records, setRecords] = useState<RiskRecord[]>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("manajemen_risiko");
@@ -183,6 +181,7 @@ export default function ManajemenRisiko() {
               };
               await supabase.from('manajemen_risiko').insert(payload);
             }
+            setRecords(localSaved);
           } else {
             const mapped = data.map(d => ({
               id: d.id,
@@ -393,33 +392,7 @@ export default function ManajemenRisiko() {
     setIsDetailModalOpen(true);
   };
 
-  const sqlToCopy = `CREATE TABLE IF NOT EXISTS public.manajemen_risiko (
-  id TEXT PRIMARY KEY,
-  tahun TEXT,
-  unit TEXT,
-  risiko TEXT,
-  penyebab TEXT,
-  severity INT,
-  probability INT,
-  risk_score INT,
-  pengelolaan TEXT,
-  pic TEXT,
-  grading TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
-ALTER TABLE public.manajemen_risiko ENABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS "Public Access Manajemen Risiko" ON public.manajemen_risiko;
-CREATE POLICY "Public Access Manajemen Risiko" ON public.manajemen_risiko FOR ALL USING (true) WITH CHECK (true);`;
-
-  const handleCopySQL = () => {
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(sqlToCopy);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    }
-  };
+  
 
   const handleDownloadCSV = () => {
     if (filteredRecords.length === 0) return;
@@ -505,36 +478,10 @@ CREATE POLICY "Public Access Manajemen Risiko" ON public.manajemen_risiko FOR AL
           <motion.div 
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 bg-amber-50/90 backdrop-blur-md border border-amber-200/60 text-amber-900 rounded-[24px] p-6 shadow-sm overflow-hidden"
+            className="mb-8 bg-red-50 border border-red-200 text-red-900 rounded-xl p-4 shadow-sm"
           >
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-amber-100 rounded-2xl text-amber-700">
-                  <Database size={24} />
-                </div>
-                <div>
-                  <h3 className="font-bold text-slate-800 text-base">Sinkronisasi Database: Mode Penyimpanan Lokal</h3>
-                  <p className="text-xs text-amber-800/80 mt-0.5 font-medium">
-                    Tabel <code className="bg-amber-100/80 px-1.5 py-0.5 rounded text-amber-900 font-mono font-bold">manajemen_risiko</code> belum terdeteksi di database Supabase Anda.
-                  </p>
-                </div>
-              </div>
-              <button 
-                onClick={handleCopySQL}
-                className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-sm transition-all duration-300 self-stretch md:self-auto justify-center"
-              >
-                {copied ? <CheckCircle2 size={15} /> : <Copy size={15} />}
-                {copied ? "SQL Disalin!" : "Salin SQL Setup"}
-              </button>
-            </div>
-            <div className="text-xs text-amber-950/90 leading-relaxed bg-white/60 p-4 rounded-xl border border-amber-100/50 space-y-2">
-              <p>
-                💡 **Data Anda Aman & Tidak Akan Hilang:** Semua data yang Anda input secara otomatis disimpan di browser Anda (**localStorage**). Data akan tetap utuh walaupun Anda menyegarkan peramban (refresh) atau memuat ulang halaman.
-              </p>
-              <p>
-                🛠️ **Cara Sinkronisasi ke Supabase Cloud:** Salin perintah SQL di atas menggunakan tombol salin, buka **SQL Editor** di dashboard Supabase Anda, tempelkan (paste), lalu klik **Run**. Setelah itu, refresh halaman ini untuk menghubungkan data Anda secara cloud sepenuhnya!
-              </p>
-            </div>
+            <h3 className="font-bold text-base flex items-center gap-2"><Database size={18} /> Database Error</h3>
+            <p className="text-sm mt-1">{supabaseError}</p>
           </motion.div>
         )}
 
