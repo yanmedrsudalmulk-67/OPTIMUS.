@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from "react";
-import Image from 'next/image';
 import { Copy, Plus, Eye, Key, Trash, Calendar, Building, AlertTriangle, ShieldCheck, FileSignature, CheckCircle, Search, Filter } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { motion, AnimatePresence } from "motion/react";
@@ -361,7 +360,7 @@ export default function IKPHistory({ dataList, onEdit }: any) {
                    <div>
                      <p className="font-bold mb-2">Pelapor</p>
                      {viewData.fullFormData?.pembuatSignature ? (
-                       <div className="relative h-24 w-full mx-auto"><Image src={viewData.fullFormData?.pembuatSignature} alt="Tanda Tangan Pembuat" fill className="object-contain" style={{ mixBlendMode: 'multiply' }} referrerPolicy="no-referrer" /></div>
+                       <img src={viewData.fullFormData?.pembuatSignature} alt="Tanda Tangan Pembuat" className="h-24 mx-auto" style={{ mixBlendMode: 'multiply' }} />
                      ) : (
                        <div className="h-24" />
                      )}
@@ -371,7 +370,7 @@ export default function IKPHistory({ dataList, onEdit }: any) {
                    <div>
                      <p className="font-bold mb-2">Penerima Laporan</p>
                      {viewData.fullFormData?.penerimaSignature ? (
-                       <div className="relative h-24 w-full mx-auto"><Image src={viewData.fullFormData?.penerimaSignature} alt="Tanda Tangan Penerima" fill className="object-contain" style={{ mixBlendMode: 'multiply' }} referrerPolicy="no-referrer" /></div>
+                       <img src={viewData.fullFormData?.penerimaSignature} alt="Tanda Tangan Penerima" className="h-24 mx-auto" style={{ mixBlendMode: 'multiply' }} />
                      ) : (
                        <div className="h-24" />
                      )}
